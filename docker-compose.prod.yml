@@ -1,0 +1,10 @@
+version: "3"
+services:
+    node-app:
+        build:
+            context: . # specify location of Dockerfile
+            args:
+                NODE_ENV: production # Pass in the env that is used in Dockerfile later. 
+        environment:
+            - NODE_ENV=production
+        command: node index.js # same as Dockerfile.

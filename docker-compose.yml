@@ -1,0 +1,13 @@
+# Setup settings that both dev and prod will be sharing here.
+version: "3"
+services: 
+    node-app:
+        build: . # Both will use Dockerfile to build - docker build node-app .
+        ports:
+            - "3000:3000"
+        environment: 
+            - PORT:3000
+    
+# When running docker-compose now do the following for prod or dev (where -f is flag):
+# docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+# docker compose -f docker-compose.yml -f docker-compose.dev.yml down -v

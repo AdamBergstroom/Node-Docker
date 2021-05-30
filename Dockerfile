@@ -13,17 +13,30 @@ WORKDIR /app
 COPY package.json .
 
 # Install all the npm packages now in the container.
-RUN npm install
+# Issue here is that all dev dependencies are installed as well e.g. nodemon
+#RUN npm install
+
+# This bash script makes sure dev dependencies are not installed in production.
+# Pass in the env to work with from the docker-compose yaml file.
+ARG NODE_ENV
+RUN if [ "$NODE_ENV" = "development" ]; \
+        then npm install; \
+        else npm install --only=production; \
+        fi
 
 # Copy all the rest of the data into the work directory.
 # This is necessary despite using Bind Mount, since BM is just for development purspose --save-d
 COPY . ./
 
-# Telling what port container (nodejs) should be exposed on.
-EXPOSE 3000
+# Set env variables that the app can use.
+#ENV PORT 3000
+
+# This is just for documentation purspose. It's not a layer that does anything.
+#EXPOSE $PORT
+# EXPOSE 3000
 
 # At runtime run these commands.
-CMD ["npm", "run", "dev"]
+CMD ["node", "index.js"]
 
 #To run this file in command line type: docker build -t node-app-image .
 # Then run container with: docker run -d -p 3000:3000 --name node-app node-app-image 
@@ -44,4 +57,10 @@ CMD ["npm", "run", "dev"]
 # Bind mount your current folder with the container folder:  -v $(pwd):/app
 # To make the container read only (no two way changes) add: -v $(pwd):/app:ro
 # Make sure you ignore node_modules in contaienr: -v /app/node_modules  
-# docker run -d -v $(pwd):/app:ro -v /app/node_modules -p 3000:3000 --name node-app node-app-image 
+# docker run -d -v $(pwd):/app:ro -v /app/node_modules -p 3000:3000 --name node-app node-app-image
+
+# ENV
+# Expose ENV here in Dockerfile OR:
+# Create an .env file and pass it in when starting container
+# --env-file ./.env
+# docker run -d -v $(pwd):/app:ro -v /app/node_modules --env-file ./.env -p 3000:3000 --name node-app node-app-image

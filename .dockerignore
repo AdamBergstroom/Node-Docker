@@ -1,5 +1,7 @@
 node_modules
 Dockerfile
+docker-compose*
+.prettierignore
 .dockerignore
 .git
 .gitignore
