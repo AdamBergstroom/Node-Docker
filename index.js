@@ -1,6 +1,34 @@
 const express = require("express")
+const mongoose = require("mongoose")
+const {
+    MONGO_USER,
+    MONGO_PASSWORD,
+    MONGO_IP,
+    MONGO_PORT,
+} = require("./config/config")
 
 const app = express()
+
+const mongoURL = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_IP}:${MONGO_PORT}/?authSource=admin`
+
+// Making sure mongo-db is started before connecting.
+// docker could be delayed with setting it up.
+const connectWithRetry = () => {
+    mongoose
+        .connect(mongoURL, {
+            // optional. Will remove some warnings when connecting to mongo-db
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useFindAndModify: false,
+        })
+        .then(() => console.log("Successfully connected to mongo-db"))
+        .catch((error) => {
+            console.log(`Could not connect to mongo-db\nError: ${error}`)
+            setTimeout(connectWithRetry, 5000)
+        })
+}
+
+connectWithRetry()
 
 app.get("/", (req, res) => {
     res.send("<h2>Hello World</h2>")

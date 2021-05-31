@@ -7,7 +7,30 @@ services:
             - "3000:3000"
         environment: 
             - PORT:3000
-    
+        depends_on:
+            - mongo # Start mongo container first.
+            # Start without depends_on type: --no-deps node-app
+    mongo: # this name declaration is also the dns name for this container (ip address)
+        image: mongo
+        environment: 
+            - MONGO_INITDB_ROOT_USERNAME=admin
+            - MONGO_INITDB_ROOT_PASSWORD=1234
+        volumes: 
+            - mongo-db:/data/db # Will create a named volume that points to the location of /data/db in the mongo container. 
+        # In order to login via terminal type either: 
+        # mongo -u "admin" -p "1234" or directly: 
+        # docker exec -it [container id] mongo -u "admin" -p "1234"
+
+# All named volumes e.g. mongo-db:/data/db needs to be decleared. Bind mounts are noot needed to declare.
+# This is because other containers can also have the same named volumes.
+volumes: 
+    mongo-db:
+
+
 # When running docker-compose now do the following for prod or dev (where -f is flag):
 # docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
-# docker compose -f docker-compose.yml -f docker-compose.dev.yml down -v
+# docker compose -f docker-compose.yml -f docker-compose.dev.yml down
+# NOTICE: -v cannot be run now, since it will delete the named volume as well. Instead run: docker volume prune
+
+# When swapping between prod and dev. Sometimes issues have occurred with package not updating and nodemon not working:
+# https://forums.docker.com/t/resolved-docker-compose-keeps-running-old-package-json-dockerfile/91403

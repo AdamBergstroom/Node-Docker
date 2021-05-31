@@ -19,10 +19,9 @@ COPY package.json .
 # This bash script makes sure dev dependencies are not installed in production.
 # Pass in the env to work with from the docker-compose yaml file.
 ARG NODE_ENV
-RUN if [ "$NODE_ENV" = "development" ]; \
-        then npm install; \
-        else npm install --only=production; \
-        fi
+RUN if [ "$NODE_ENV" = "development" ] ; then npm install ; else npm install --only=production ; fi
+#RUN npm install
+
 
 # Copy all the rest of the data into the work directory.
 # This is necessary despite using Bind Mount, since BM is just for development purspose --save-d

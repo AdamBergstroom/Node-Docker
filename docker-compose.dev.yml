@@ -6,21 +6,27 @@ version: "3"
 # Specify all the containers you want to run.
 # Notice that spaces and tabs do matter here... can break otherwhise.
 # Image name is [map catalogue]_[container name] e.g. node-docker_node_app
+# See more here: https://docs.docker.com/compose/compose-file/compose-file-v3/#args
 services:
     node-app:   # name the container i.e. --name node-app
         build:
             context: . # specify location of Dockerfile
             args:
-                NODE_ENV: development # Pass in the env that is used in Dockerfile later.
+                - NODE_ENV=development # Pass in the env that is used in Dockerfile later. 
         volumes:
             - ./:/app # Bind mount, same as -v $(pwd):/app
             - /app/node_modules # ignore changes of node_modules -v /app/node_modules
         environment:
             - NODE_ENV=development
+            - MONGO_USER=admin
+            - MONGO_PASSWORD=1234   
         command: npm run dev # overrite "node index.js" since this is development.
         #env_file:
         #    - ./.env   # imports an .env file to container --env-file ./.env
-
+    mongo: # Lets overrite some stuff
+        environment: 
+            - MONGO_INITDB_ROOT_USERNAME=admin
+            - MONGO_INITDB_ROOT_PASSWORD=1234
 
 # Start by typing: 
 # docker-compose up -d or via CLI docker compose up -d
