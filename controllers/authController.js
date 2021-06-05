@@ -9,6 +9,7 @@ exports.signUp = async(req, res) => {
             username,
             password: hashPassword,
         })
+        req.session.user = newUser
         res.status(201).json({
             status: "success",
             data: {
@@ -35,6 +36,11 @@ exports.login = async(req, res) => {
 
         const isCorrect = await bcrypt.compare(password, user.password)
         if (isCorrect) {
+            // Now we work with Redis sessions.
+            // step 1: assign user to a session.
+            // ste 2: login and see details about the session in redis - docker exec -it node-docker_redis_1 redis cli - then - Keys * - to see all current sessions - then - GET [session key] - to see the details there of user object.
+            req.session.user = user
+
             res.status(201).json({
                 status: "success",
             })

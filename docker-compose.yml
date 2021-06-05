@@ -24,7 +24,7 @@ services:
     redis:
         image: redis
         volumes:
-            - redis-db:/data 
+            - redis-db:/data # type in docker exec -it Node-Docker_redis_1 redis cli , to see the data inside. Type "Keys *" to see curent sessions.
 
 # All named volumes e.g. mongo-db:/data/db needs to be decleared. Bind mounts are noot needed to declare.
 # This is because other containers can also have the same named volumes.

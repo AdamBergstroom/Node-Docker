@@ -54,7 +54,7 @@ app.use(
             resave: false,
             saveUninitialized: false,
             httpOnly: true, // only javascript can access it.
-            maxAge: 30000, // 30 seconds it will last.
+            maxAge: 300000, // milliseconds how long session will last (5 min now)
         },
     })
 )
