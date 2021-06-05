@@ -9,6 +9,7 @@ services:
             - PORT:3000
         depends_on:
             - mongo # Start mongo container first.
+            - redis
             # Start without depends_on type: --no-deps node-app
     mongo: # this name declaration is also the dns name for this container (ip address)
         image: mongo
@@ -20,11 +21,16 @@ services:
         # In order to login via terminal type either: 
         # mongo -u "admin" -p "1234" or directly: 
         # docker exec -it [container id] mongo -u "admin" -p "1234"
+    redis:
+        image: redis
+        volumes:
+            - redis-db:/data 
 
 # All named volumes e.g. mongo-db:/data/db needs to be decleared. Bind mounts are noot needed to declare.
 # This is because other containers can also have the same named volumes.
 volumes: 
     mongo-db:
+    redis-db:
 
 
 # When running docker-compose now do the following for prod or dev (where -f is flag):
