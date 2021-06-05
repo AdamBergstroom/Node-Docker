@@ -19,7 +19,8 @@ services:
         environment:
             - NODE_ENV=development
             - MONGO_USER=admin
-            - MONGO_PASSWORD=1234   
+            - MONGO_PASSWORD=1234
+            - SESSION_SECRET=secret # password for your redis sessions  
         command: npm run dev # overrite "node index.js" since this is development.
         #env_file:
         #    - ./.env   # imports an .env file to container --env-file ./.env
