@@ -1,10 +1,12 @@
 # Setup settings that both dev and prod will be sharing here.
 version: "3"
-services: 
+services:
+    nginx:
+        image: nginx:stable-alpine
+        volumes: 
+            - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro # Bind mount here. read only ":ro"
     node-app:
         build: . # Both will use Dockerfile to build - docker build node-app .
-        ports:
-            - "3000:3000"
         environment: 
             - PORT:3000
         depends_on:
@@ -23,14 +25,11 @@ services:
         # docker exec -it [container id] mongo -u "admin" -p "1234"
     redis:
         image: redis
-        volumes:
-            - redis-db:/data # type in docker exec -it Node-Docker_redis_1 redis cli , to see the data inside. Type "Keys *" to see curent sessions.
-
+  
 # All named volumes e.g. mongo-db:/data/db needs to be decleared. Bind mounts are noot needed to declare.
 # This is because other containers can also have the same named volumes.
 volumes: 
     mongo-db:
-    redis-db:
 
 
 # When running docker-compose now do the following for prod or dev (where -f is flag):

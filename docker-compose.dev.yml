@@ -8,6 +8,9 @@ version: "3"
 # Image name is [map catalogue]_[container name] e.g. node-docker_node_app
 # See more here: https://docs.docker.com/compose/compose-file/compose-file-v3/#args
 services:
+    nginx:
+        ports: 
+            - "3000:80" # nginx is listening on port 80. We can access it via 3000 outside.
     node-app:   # name the container i.e. --name node-app
         build:
             context: . # specify location of Dockerfile

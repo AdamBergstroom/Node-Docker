@@ -62,7 +62,7 @@ app.use(
 // Allow json objects to be sent.
 app.use(express.json())
 
-app.get("/", (req, res) => {
+app.get("/api/v1", (req, res) => {
     res.send("<h2>Hello World</h2>")
 })
 

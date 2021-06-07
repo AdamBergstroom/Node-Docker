@@ -1,5 +1,8 @@
 version: "3"
 services:
+    nginx:
+        ports: 
+            - "80:80" # nginx is listening on port 80. We can access it via 80 outside.
     node-app:
         build:
             context: . # specify location of Dockerfile
