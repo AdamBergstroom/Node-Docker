@@ -9,6 +9,7 @@ const {
 } = require("./config/config")
 const express = require("express")
 const mongoose = require("mongoose")
+const cors = require("cors")
 
 const session = require("express-session")
 const redis = require("redis")
@@ -44,7 +45,9 @@ const connectWithRetry = () => {
 
 connectWithRetry()
 
-// Connect Redis
+app.enable("trust proxy") // enable proxy settings for this api where nginx is communicating.
+app.use(cors({})) // enable cors so frontend can have a different dns then this api. It will reject if not the same dns name otherwise.
+    // Connect Redis
 app.use(
     session({
         store: new RedisStore({ client: redisClient }),
