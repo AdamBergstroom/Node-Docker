@@ -34,8 +34,8 @@ volumes:
 
 
 # When running docker-compose now do the following for prod or dev (where -f is flag):
-# docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
-# docker compose -f docker-compose.yml -f docker-compose.dev.yml down
+# docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+# docker-compose -f docker-compose.yml -f docker-compose.dev.yml down
 # NOTICE: -v cannot be run now, since it will delete the named volume as well. Instead run: docker volume prune
 
 # When swapping between prod and dev. Sometimes issues have occurred with package not updating and nodemon not working:
