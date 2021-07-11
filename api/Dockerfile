@@ -25,7 +25,7 @@ RUN if [ "$NODE_ENV" = "development" ] ; then npm install ; else npm install --o
 
 # Copy all the rest of the data into the work directory.
 # This is necessary despite using Bind Mount, since BM is just for development purspose --save-d
-COPY . ./
+COPY . .
 
 # Set env variables that the app can use.
 #ENV PORT 3000
